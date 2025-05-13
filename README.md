@@ -1,6 +1,6 @@
-# Projeto Pizzaria - Backend Simples com Spring Boot
+# Projeto Pizzaria - Backend com JWT
 
-Este é um projeto didático de uma API REST desenvolvida com **Spring Boot**, focada no cadastro de pizzas. A aplicação se comunica com um banco de dados MySQL e permite realizar operações básicas via HTTP.
+Este é um projeto simples de API REST usando **Spring Boot** com **autenticação JWT**, voltado para o gerenciamento de pizzas. Apenas a rota `/pizza` é protegida por token. As demais estão públicas ou são de login.
 
 ---
 
@@ -8,6 +8,7 @@ Este é um projeto didático de uma API REST desenvolvida com **Spring Boot**, f
 
 - Java 17
 - Spring Boot
+- JWT (JJWT)
 - Maven
 - Docker + Docker Compose
 - MySQL
@@ -34,18 +35,38 @@ docker-compose up -d
 
 ### 3. Verificar se a API está rodando
 
-Acesse: [http://localhost:8080/pizza](http://localhost:8080/pizza)  caso use uma VM a porta será 8099
+Acesse: [http://localhost:8080/pizza](http://localhost:8080/pizza)
 
 ---
 
-## 📁 Endpoints disponíveis
+## 🧪 Testes com JWT
 
-- `GET /pizza`: lista todas as pizzas cadastradas
-- `POST /pizza`: cadastra uma nova pizza
-- `PUT /pizza/{id}`: atualiza uma pizza existente
-- `DELETE /pizza/{id}`: remove uma pizza por ID
+### 1. Autenticar e obter token
 
-> Obs: não há autenticação ou segurança implementadas nesta versão. Todos os endpoints estão abertos para testes.
+`POST /auth/login`
+
+```json
+{
+  "username": "admin",
+  "password": "senha123"
+}
+```
+
+A resposta será:
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiJ9..."
+}
+```
+
+### 2. Acessar rota protegida
+
+Use o token no cabeçalho:
+
+```
+Authorization: Bearer SEU_TOKEN_AQUI
+```
 
 ---
 
@@ -69,23 +90,41 @@ docker system prune -af --volumes
 
 ---
 
+## 📁 Estrutura de autenticação
+
+- `/auth/login`: login básico com usuário fixo
+- `/pizza`: rota protegida por JWT
+- `JwtFilter.java`: verifica o token em cada requisição
+- `JwtUtil.java`: gera e valida tokens
+- `WebConfig.java`: registra o filtro somente para `/pizza/**`
+
+---
+
 ## 🧪 Testes com cURL
 
 ### Linux/macOS
 
 ```bash
-curl http://localhost:8080/pizza
+TOKEN=$(curl -s -X POST http://localhost:8080/auth/login -H "Content-Type: application/json" -d '{"username":"admin","password":"senha123"}' | jq -r '.token')
+curl -H "Authorization: Bearer $TOKEN" http://localhost:8080/pizza
 ```
 
 ### Windows PowerShell
 
 ```powershell
-Invoke-RestMethod -Uri "http://localhost:8080/pizza"
+$response = Invoke-RestMethod -Uri "http://localhost:8080/auth/login" -Method POST -Body '{"username":"admin","password":"senha123"}' -ContentType "application/json"
+$token = $response.token
+Invoke-RestMethod -Uri "http://localhost:8080/pizza" -Headers @{ Authorization = "Bearer $token" }
 ```
 
 ---
 
-## 👨‍🏫 Objetivo
+## 📦 Postman Collection
 
-Este projeto foi elaborado com fins **educacionais**, para demonstrar a construção de uma API REST simples com Java e Spring Boot, utilizando um banco de dados relacional e boas práticas na estrutura do projeto.
+Você pode importar o arquivo `postman_collection_jwt_pizza.json` para testar os endpoints no Postman.
 
+---
+
+## 👨‍🏫 Autor e objetivo
+
+Este projeto foi preparado de forma **didática**, para fins de ensino de segurança com tokens em APIs REST usando Spring Boot.
