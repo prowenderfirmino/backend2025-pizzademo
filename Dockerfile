@@ -9,6 +9,9 @@ COPY pom.xml .
 # Copiar o código fonte
 COPY src src
 
+# Dar permissão de execução para o Maven Wrapper
+RUN chmod +x ./mvnw
+
 # Buildar a aplicação
 RUN ./mvnw package -DskipTests
 
