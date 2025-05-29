@@ -12,7 +12,8 @@ public class JwtUtil {
     // Private constructor to prevent instantiation
     private JwtUtil() {}
 
-    private static final String SECRET_KEY = "segredoSimples123segredoSimples123"; // pelo menos 32 chars para HS512
+    // Gere uma chave secreta com pelo menos 512 bits (64 bytes) para HS512
+    private static final String SECRET_KEY = "umasecretkeymuitograndeparausohs512umasecretkeymuitograndeparausohs5121234567890";
     private static final long EXPIRATION_TIME = 86400000;
 
     private static final SecretKey KEY = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
