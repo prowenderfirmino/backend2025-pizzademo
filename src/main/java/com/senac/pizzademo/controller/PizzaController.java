@@ -1,6 +1,8 @@
 package com.senac.pizzademo.controller;
 import java.util.*;
 
+import jakarta.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +24,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * PizzaController gerencia os endpoints REST para manipulação das pizzas.
@@ -43,6 +47,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 @RestController
 @RequestMapping("/pizza")
 public class PizzaController {
+    private static final Logger logger = LoggerFactory.getLogger(PizzaController.class);
 
     private final PizzaRepository pizzaRepository;
 
@@ -58,6 +63,7 @@ public class PizzaController {
     @Operation(summary = "Lista todas as pizzas", description = "Retorna uma lista com todas as pizzas cadastradas.")
     @GetMapping
     public List<Pizza> getAllPizzas() {
+        logger.info("Listando todas as pizzas");
         return pizzaRepository.findAll();
     }
 
@@ -79,7 +85,8 @@ public class PizzaController {
         )
     )
     @PostMapping
-    public Pizza createPizza(@RequestBody Pizza pizza) {
+    public Pizza createPizza(@Valid @RequestBody Pizza pizza) {
+        logger.info("Criando pizza: {}", pizza.getSabor());
         return pizzaRepository.save(pizza);
     }
 

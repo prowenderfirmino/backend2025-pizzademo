@@ -4,9 +4,12 @@ import com.senac.pizzademo.security.JwtFilter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.lang.NonNull;
 
 @Configuration
-public class WebConfig {
+public class WebConfig implements WebMvcConfigurer {
     @Bean
     public FilterRegistrationBean<JwtFilter> jwtFilter() {
         FilterRegistrationBean<JwtFilter> registrationBean = new FilterRegistrationBean<>();
@@ -15,4 +18,12 @@ public class WebConfig {
         registrationBean.setOrder(1); // Garante prioridade do filtro se houver outros
         return registrationBean;
     }
+    @Override
+    public void addCorsMappings(@NonNull CorsRegistry registry) {
+        registry.addMapping("/**")
+            .allowedOrigins("*") // Permite todas as origens (ajuste conforme necessário)
+            .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
+            .allowedHeaders("*");
+    }
+    
 }

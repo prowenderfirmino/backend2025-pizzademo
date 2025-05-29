@@ -20,6 +20,8 @@ public class Pizza {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @jakarta.validation.constraints.NotBlank(message = "O sabor da pizza é obrigatório.")
+    @jakarta.validation.constraints.Size(min = 2, max = 50, message = "O sabor deve ter entre 2 e 50 caracteres.")
     private String Sabor;
 
     @OneToMany(mappedBy = "pizza", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)

@@ -18,7 +18,10 @@ public class Cardapio {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
+    @jakarta.validation.constraints.NotNull(message = "O valor é obrigatório.")
     private Float valor;
+
+    @jakarta.validation.constraints.NotBlank(message = "O tamanho é obrigatório.")
     private String tamanho;
 
     @ManyToOne(fetch = FetchType.LAZY)

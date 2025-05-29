@@ -21,7 +21,11 @@ public class Ingredientes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @jakarta.validation.constraints.NotBlank(message = "O nome do ingrediente é obrigatório.")
+    @jakarta.validation.constraints.Size(min = 2, max = 50, message = "O nome do ingrediente deve ter entre 2 e 50 caracteres.")
     private String ingrediente;
+
+    @jakarta.validation.constraints.NotBlank(message = "A quantidade é obrigatória.")
     private String quantidade;
 
     @ManyToOne(fetch = FetchType.LAZY)

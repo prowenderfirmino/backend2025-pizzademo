@@ -1,6 +1,8 @@
 package com.senac.pizzademo.controller;
 import java.util.List;
 
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +20,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * IngredientesController gerencia os endpoints REST para manipulação dos ingredientes das pizzas.
@@ -37,6 +41,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 @RestController
 @RequestMapping("/ingredientes")
 public class IngredientesController {
+    private static final Logger logger = LoggerFactory.getLogger(IngredientesController.class);
 
     private final IngredientesRepository ingredientesRepository;
 
@@ -52,6 +57,7 @@ public class IngredientesController {
     @Operation(summary = "Lista todos os ingredientes", description = "Retorna uma lista com todos os ingredientes cadastrados.")
     @GetMapping
     public List<Ingredientes> getAllIngredientes() {
+        logger.info("Listando todos os ingredientes");
         return ingredientesRepository.findAll();
     }
 
@@ -73,7 +79,8 @@ public class IngredientesController {
         )
     )
     @PostMapping
-    public Ingredientes createIngrediente(@RequestBody Ingredientes ingredientes) {
+    public Ingredientes createIngrediente(@Valid @RequestBody Ingredientes ingredientes) {
+        logger.info("Criando ingrediente: {}", ingredientes.getIngrediente());
         return ingredientesRepository.save(ingredientes);
     }
 
@@ -96,6 +103,7 @@ public class IngredientesController {
     )
     @PostMapping("/batch")
     public List<Ingredientes> createMultiplosIngredientes(@RequestBody List<Ingredientes> ingredientesList) {
+        logger.info("Criando múltiplos ingredientes");
         return ingredientesRepository.saveAll(ingredientesList);
     }
 
@@ -119,6 +127,7 @@ public class IngredientesController {
     )
     @PutMapping("/{id}")
     public Ingredientes updateIngrediente(@PathVariable Long id, @RequestBody Ingredientes ingredientes) {
+        logger.info("Atualizando ingrediente com ID {}: {}", id, ingredientes.getIngrediente());
         return ingredientesRepository.findById(id)
             .map(existing -> {
                 existing.setIngrediente(ingredientes.getIngrediente());
@@ -151,6 +160,7 @@ public class IngredientesController {
     )
     @PatchMapping("/{id}")
     public Ingredientes updateIngredienteParcial(@PathVariable Long id, @RequestBody Ingredientes ingredientes) {
+        logger.info("Atualizando parcialmente ingrediente com ID {}", id);
         return ingredientesRepository.findById(id)
             .map(existing -> {
                 if (ingredientes.getIngrediente() != null) {
@@ -181,6 +191,7 @@ public class IngredientesController {
     @ApiResponse(responseCode = "200", description = "Ingrediente removido com sucesso")
     @DeleteMapping("/{id}")
     public void deleteIngrediente(@PathVariable Long id) {
+        logger.info("Removendo ingrediente com ID {}", id);
         ingredientesRepository.deleteById(id);
     }
 

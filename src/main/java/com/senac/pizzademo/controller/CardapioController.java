@@ -2,6 +2,8 @@ package com.senac.pizzademo.controller;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -19,6 +21,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * CardapioController é responsável por gerenciar os endpoints REST relacionados ao cardápio de pizzas.
@@ -26,6 +30,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 @RestController
 @RequestMapping("/cardapio")
 public class CardapioController {
+    private static final Logger logger = LoggerFactory.getLogger(CardapioController.class);
 
     private final CardapioRepository cardapioRepository;
 
@@ -44,6 +49,7 @@ public class CardapioController {
     @Operation(summary = "Lista todos os itens do cardápio", description = "Retorna uma lista com todos os itens cadastrados no cardápio.")
     @GetMapping
     public List<Cardapio> getAllCardapios() {
+        logger.info("Listando todos os itens do cardápio");
         return cardapioRepository.findAll();
     }
 
@@ -66,7 +72,8 @@ public class CardapioController {
         )
     )
     @PostMapping
-    public Cardapio createCardapio(@RequestBody Cardapio cardapio) {
+    public Cardapio createCardapio(@Valid @RequestBody Cardapio cardapio) {
+        logger.info("Criando item do cardápio: {}", cardapio.getTamanho());
         return cardapioRepository.save(cardapio);
     }
 
