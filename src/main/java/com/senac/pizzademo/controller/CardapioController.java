@@ -188,4 +188,28 @@ public class CardapioController {
         cardapioRepository.deleteById(id);
     }
 
+    /**
+     * Busca um item do cardápio pelo ID.
+     *
+     * Retorna os detalhes de um item específico do cardápio.
+     * Útil para exibir informações detalhadas de uma pizza.
+     *
+     * @param id ID do item a ser buscado.
+     * @return O item do cardápio correspondente ao ID.
+     */
+    @Operation(
+        summary = "Busca um item do cardápio pelo ID",
+        description = "Retorna os detalhes de um item específico do cardápio."
+    )
+    @ApiResponse(responseCode = "200", description = "Item encontrado",
+        content = @Content(mediaType = "application/json",
+            schema = @Schema(implementation = Cardapio.class)
+        )
+    )
+    @GetMapping("/{id}")
+    public Cardapio getCardapioById(@PathVariable Long id) {
+        return cardapioRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Cardápio não encontrado"));
+    }
+
 }
