@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.senac.pizzademo.dto.PizzaSimplesDTO;
 import com.senac.pizzademo.dto.ReajustePrecoDTO;
 import com.senac.pizzademo.model.Cardapio;
 import com.senac.pizzademo.model.Ingredientes;
@@ -229,5 +230,17 @@ public class PizzaController {
         
         return ResponseEntity.ok("Preços reajustados em " + reajuste.getPercentual() + "%");
     }
+
+    @PostMapping("/simples")
+    public ResponseEntity<Pizza> cadastrarPizzaSimpleString(@RequestBody PizzaSimplesDTO dto) {
+        logger.info("Cadastrando pizza simples com sabor: {}", dto.getSabor());
+        Pizza pizza = new Pizza();        
+        pizza.setSabor(dto.getSabor());
+        Pizza  salva = pizzaRepository.save(pizza);
+        return ResponseEntity.status(201).body(salva);
+    }
+
+
+    
 
 }
