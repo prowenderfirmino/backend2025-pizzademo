@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.senac.pizzademo.dto.ReajustePrecoDTO;
 import com.senac.pizzademo.model.Cardapio;
 import com.senac.pizzademo.model.Ingredientes;
 import com.senac.pizzademo.model.Pizza;
@@ -209,6 +210,24 @@ public class PizzaController {
                 return ResponseEntity.ok(pizzaRepository.save(p));
             }).orElse(ResponseEntity.notFound().build());
     
+    }
+
+    @PatchMapping("/reajustar")
+    public ResponseEntity<String> reajustarPreco(
+        @Valid @RequestBody ReajustePrecoDTO reajuste) {
+        
+        logger.info("Reajustando preços das pizzas com percentual: {}", reajuste.getPercentual());
+        
+        List<Pizza> pizzas = pizzaRepository.findAll();
+        for (Pizza pizza : pizzas) {
+            pizza.getCardapio().forEach(cardapio -> {
+                Float novoValor = cardapio.getValor() * (1 + reajuste.getPercentual() / 100);
+                cardapio.setValor(novoValor);
+            });
+            pizzaRepository.save(pizza);
+        }
+        
+        return ResponseEntity.ok("Preços reajustados em " + reajuste.getPercentual() + "%");
     }
 
 }

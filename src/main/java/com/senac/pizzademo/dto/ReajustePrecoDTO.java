@@ -2,14 +2,14 @@ package com.senac.pizzademo.dto;
 
 public class ReajustePrecoDTO {
     
-    private Double percentual;
+    private Float percentual;
 
     
-    public Double getPercentual() {
+    public Float getPercentual() {
         return percentual;
     }
 
-    public void setPercentual(Double percentual) {
+    public void setPercentual(Float percentual) {
         this.percentual = percentual;
     }
 }
