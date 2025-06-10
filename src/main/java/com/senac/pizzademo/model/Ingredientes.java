@@ -21,8 +21,12 @@ public class Ingredientes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String Ingrediente;
-    private String Quantidade;
+    @jakarta.validation.constraints.NotBlank(message = "O nome do ingrediente é obrigatório.")
+    @jakarta.validation.constraints.Size(min = 2, max = 50, message = "O nome do ingrediente deve ter entre 2 e 50 caracteres.")
+    private String ingrediente;
+
+    @jakarta.validation.constraints.NotBlank(message = "A quantidade é obrigatória.")
+    private String quantidade;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pizza_id")
@@ -34,19 +38,19 @@ public class Ingredientes {
     }
 
     public String getIngrediente() {
-        return this.Ingrediente;
+        return this.ingrediente;
     }
 
-    public void setIngrediente(String Ingrediente) {
-        this.Ingrediente = Ingrediente;
+    public void setIngrediente(String ingrediente) {
+        this.ingrediente = ingrediente;
     }
 
     public String getQuantidade() {
-        return this.Quantidade;
+        return this.quantidade;
     }
 
-    public void setQuantidade(String Quantidade) {
-        this.Quantidade = Quantidade;
+    public void setQuantidade(String quantidade) {
+        this.quantidade = quantidade;
     }
 
     public Pizza getPizza() {
@@ -58,9 +62,9 @@ public class Ingredientes {
     }
 
 
-    public Ingredientes(String Ingrediente, String Quantidade, Pizza pizza) {
-        this.Ingrediente = Ingrediente;
-        this.Quantidade = Quantidade;
+    public Ingredientes(String ingrediente, String quantidade, Pizza pizza) {
+        this.ingrediente = ingrediente;
+        this.quantidade = quantidade;
         this.pizza = pizza;
     }
     

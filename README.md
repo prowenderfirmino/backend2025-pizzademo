@@ -1,6 +1,10 @@
 # Projeto Pizzaria - Backend Simples com Spring Boot
 
-Este é um projeto didático de uma API REST desenvolvida com **Spring Boot**, focada no cadastro de pizzas. A aplicação se comunica com um banco de dados MySQL e permite realizar operações básicas via HTTP.
+## ⚡ Pré-requisitos
+
+- Java 17 instalado
+- Maven instalado
+- Docker e Docker Compose instalados
 
 ---
 
@@ -11,6 +15,19 @@ Este é um projeto didático de uma API REST desenvolvida com **Spring Boot**, f
 - Maven
 - Docker + Docker Compose
 - MySQL
+
+---
+
+## 🚀 Como rodar o projeto localmente (sem Docker)
+
+1. Configure o banco de dados MySQL localmente (ou ajuste as variáveis em `src/main/resources/application.properties`).
+2. Execute o comando:
+
+```bash
+./mvnw spring-boot:run
+```
+
+A API estará disponível em [http://localhost:8080/pizza](http://localhost:8080/pizza)
 
 ---
 
@@ -45,7 +62,29 @@ Acesse: [http://localhost:8080/pizza](http://localhost:8080/pizza)  caso use uma
 - `PUT /pizza/{id}`: atualiza uma pizza existente
 - `DELETE /pizza/{id}`: remove uma pizza por ID
 
+### Exemplo de payload para POST/PUT
+
+```json
+{
+  "nome": "Calabresa",
+  "preco": 39.90,
+  "ingredientes": ["calabresa", "queijo", "molho de tomate"]
+}
+```
+
 > Obs: não há autenticação ou segurança implementadas nesta versão. Todos os endpoints estão abertos para testes.
+
+---
+
+## 📖 Documentação Swagger
+
+Acesse a documentação interativa em: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
+
+---
+
+## ⚙️ Configuração do banco de dados
+
+As configurações do banco podem ser ajustadas em `src/main/resources/application.properties` ou via variáveis de ambiente no Docker Compose.
 
 ---
 

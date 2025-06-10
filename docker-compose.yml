@@ -24,6 +24,8 @@ services: # Serviços que existirão neste docker-composer
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/pizzademo # URL do datasource do Spring.
       SPRING_DATASOURCE_USERNAME: user # Usuário do banco de dados para o Spring.
       SPRING_DATASOURCE_PASSWORD: password # Senha do banco de dados para o Spring.
+      SPRINGDOC_SWAGGER_UI_PATH: /swagger-ui.html # Garante acesso por /swagger-ui.html
+    restart: always # Política de reinício do contêiner.
 
 volumes: # Volumes que serão compartilhados com todos os serviços
   mysql_data: # Define um volume chamado mysql_data.
